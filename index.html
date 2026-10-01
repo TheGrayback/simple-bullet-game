@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="game/style/styles.css">
+    <title>Simple Bullet Game</title>
+</head>
+
+<body>
+    <canvas id="game" width="300" height="300" style="outline: 1px rgb(170, 181, 255) solid;"></canvas>
+    <div>
+        <label for="playerX" style="color: wheat;">Pos X</label>
+        <input type="range" name="playerX" id="pX" min="0" max="280" value="0" step="1">
+        <label for="playerY" style="color: wheat;">Pos Y</label>
+        <input type="range" name="playerY" id="pY" min="0" max="280" value="0" step="1">
+    </div>
+
+    <script src="game/main.js"></script>
+</body>
+
+</html>
