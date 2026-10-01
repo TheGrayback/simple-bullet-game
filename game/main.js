@@ -9,12 +9,18 @@ const gameCtx = gameCanvas.getContext("2d");
 // const movePlayerY = document.getElementById("pY");
 let movePlayerX = 0;
 let movePlayerY = 0;
+let rightPressed = false;
+let leftPressed = false;
+let upPressed = false;
+let downPressed = false;
+let slowDown = false;
 
 const toRad = Math.PI / 180;
 
 const Player = {
     width: 20,
     height: 20,
+    speed: 3,
     context: playerSprite.getContext("2d"),
     createPath(width, height) {
         const sprite = new Path2D();
@@ -38,50 +44,43 @@ function drawPlayerOnCanvas() {
 drawPlayerOnCanvas();
 
 window.addEventListener("keydown", (e) => {
-    if (
-        e.code == "ArrowRight" &&
-        movePlayerX + Player.width < gameCanvas.width
-    ) {
-        rightPressed = true;
-    }
+    if (e.code === "ArrowRight") rightPressed = true;
+    if (e.code === "ArrowLeft") leftPressed = true;
+    if (e.code === "ArrowDown") downPressed = true;
+    if (e.code === "ArrowUp") upPressed = true;
+    if (e.code === "ShiftLeft") slowDown = true;
 });
 window.addEventListener("keyup", (e) => {
-    if (e.code == "ArrowRight") rightPressed = false;
-});
-
-window.addEventListener("keydown", (e) => {
-    if (e.code == "ArrowLeft" && movePlayerX > 0) {
-        leftPressed = true;
-    }
-});
-window.addEventListener("keyup", (e) => {
-    if (e.code == "ArrowLeft") leftPressed = false;
-});
-
-window.addEventListener("keydown", (e) => {
-    if (
-        e.code == "ArrowDown" &&
-        movePlayerY + Player.height < gameCanvas.height
-    ) {
-        downPressed = true;
-    }
-});
-window.addEventListener("keyup", (e) => {
-    if (e.code == "ArrowDown") downPressed = false;
-});
-
-window.addEventListener("keydown", (e) => {
-    if (e.code == "ArrowUp" && movePlayerY > 0) {
-        upPressed = true;
-    }
-});
-window.addEventListener("keyup", (e) => {
-    if (e.code == "ArrowUp") upPressed = false;
+    if (e.code === "ArrowRight") rightPressed = false;
+    if (e.code === "ArrowLeft") leftPressed = false;
+    if (e.code === "ArrowDown") downPressed = false;
+    if (e.code === "ArrowUp") upPressed = false;
+    if (e.code === "ShiftLeft") slowDown = false;
 });
 
 function gameLoop() {
-    if (rightPressed) movePlayerX += 5;
-    if (leftPressed) movePlayerX -= 5;
-    if (downPressed) movePlayerY += 5;
-    if (upPressed) movePlayerX -= 5;
+    let speed = Player.speed;
+    if (slowDown) {
+        speed *= 0.5;
+    }
+    if (rightPressed && movePlayerX + Player.width < gameCanvas.width) {
+        movePlayerX += speed;
+    }
+    if (leftPressed && movePlayerX > 0) {
+        movePlayerX -= speed;
+    }
+    if (downPressed && movePlayerY + Player.height < gameCanvas.height) {
+        movePlayerY += speed;
+    }
+    if (upPressed && movePlayerY > 0) {
+        movePlayerY -= speed;
+    }
+
+    Ycoord.textContent = movePlayerY.toFixed(1);
+    Xcoord.textContent = movePlayerX.toFixed(1);
+
+    drawPlayerOnCanvas();
+    requestAnimationFrame(gameLoop);
 }
+
+gameLoop();
