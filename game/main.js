@@ -25,16 +25,16 @@ playerBulletCtx.fill(bulletPath);
 const Xcoord = document.getElementById("playerX");
 const Ycoord = document.getElementById("playerY");
 const buttonPressed = document.getElementById("button");
+const bulletCount = document.getElementById("bulletCount");
 
 const toRad = Math.PI / 180;
-const playerBullets = [];
+let playerBullets = [];
 
 function drawPlayerOnCanvas(player, playerCanvas, gameCtx) {
     gameCtx.drawImage(playerCanvas, player.posX, player.posY);
 }
 
 function drawPlayerBullet(bullet, bulletCanvas, gameCtx) {
-    // console.log(bullet);
     gameCtx.drawImage(bulletCanvas, bullet.posX, bullet.posY);
 }
 
@@ -58,7 +58,7 @@ function gameLoop() {
         player.posY -= speed;
     }
     if (controls.shoot) {
-        let bullet = new Bullet(player.posX, player.posY);
+        let bullet = new Bullet(player.posX + Math.floor(player.canvasWidth/2 - Bullet.canvasWidth / 2), player.posY);
         bullet.path = bulletPath;
         playerBullets.push(bullet);
     }
@@ -68,13 +68,19 @@ function gameLoop() {
     buttonPressed.textContent = Object.entries(controls)
         .filter((x) => x[1])
         .map((x) => x[0]);
+    bulletCount.textContent = Number(playerBullets.length)
 
-    for (const bullet of playerBullets) {
+    for (let i = playerBullets.length - 1; i >= 0; i--) {
+        const bullet = playerBullets[i];
+        bullet.posY += bullet.speed;
+        if (bullet.posY > gameCanvas.height) {
+            playerBullets.splice(i, 1);
+            continue;
+        }
         drawPlayerBullet(bullet, playerBulletCanvas, gameCtx);
     }
 
     drawPlayerOnCanvas(player, playerCanvas, gameCtx);
-    // console.log(playerBullets);
     requestAnimationFrame(gameLoop);
 }
 
