@@ -12,6 +12,9 @@ const playerCtx = playerCanvas.getContext("2d");
 
 const playerBulletCanvas = document.createElement("canvas");
 const playerBulletCtx = playerBulletCanvas.getContext("2d");
+playerBulletCtx.fillStyle = Bullet.color;
+const bulletPath = Bullet.createPath(Bullet.pathWidth, Bullet.pathHeight);
+playerBulletCtx.fill(bulletPath);
 
 const Xcoord = document.getElementById("playerX");
 const Ycoord = document.getElementById("playerY");
@@ -27,11 +30,8 @@ function drawPlayerOnCanvas(Player, playerCanvas, playerCtx, gameCtx, posX, posY
     gameCtx.drawImage(playerCanvas, posX, posY);
 }
 
-function drawPlayerBullet(bullet, bulletCanvas, bulletCtx, gameCtx, posX0, posY0) {
-    bulletCtx.fillStyle = bullet.color;
-    bullet.path = bullet.createPath(bullet.pathWidth, bullet.pathHeight);
-    bulletCtx.fill(bullet.path);
-    gameCtx.drawImage(bulletCanvas, posX0, posY0);
+function drawPlayerBullet(bullet, bulletCanvas, gameCtx) {
+    gameCtx.drawImage(bulletCanvas, bullet.posX, bullet.posY);
 }
 
 function gameLoop() {
@@ -54,9 +54,8 @@ function gameLoop() {
         Player.posY -= speed;
     }
     if (controls.shoot) {
-        let bullet = new Bullet
-        drawPlayerBullet(bullet, playerBulletCanvas, playerBulletCtx, gameCtx, Player.posX, Player.posY);
-        playerBullets.push(bullet)
+        let bullet = new Bullet(Player.posX, Player.posY);
+        playerBullets.push(bullet);
     }
 
     Ycoord.textContent = Player.posY.toFixed(1);
@@ -64,6 +63,10 @@ function gameLoop() {
     buttonPressed.textContent = Object.entries(controls)
         .filter((x) => x[1])
         .map((x) => x[0]);
+
+    for (const bullet of playerBullets) {
+        drawPlayerBullet(bullet, playerBulletCanvas, gameCtx);
+    }
 
     drawPlayerOnCanvas(Player, playerCanvas, playerCtx, gameCtx, Player.posX, Player.posY);
     console.log(playerBullets);

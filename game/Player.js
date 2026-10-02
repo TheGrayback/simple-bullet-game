@@ -8,11 +8,6 @@ const Player = {
     posY: 0,
     color: "rgb(117, 177, 212)",
     path: null,
-    createPath(width, height) {
-        const path = new Path2D();
-        path.rect(0, 0, width, height);
-        return path;
-    },
 };
 
 export default Player;
