@@ -4,6 +4,7 @@ const controls = {
     upPressed: false,
     downPressed: false,
     slowDown: false,
+    shoot: false
 };
 
 window.addEventListener("keydown", (e) => {
@@ -12,6 +13,8 @@ window.addEventListener("keydown", (e) => {
     if (e.code === "ArrowDown") controls.downPressed = true;
     if (e.code === "ArrowUp") controls.upPressed = true;
     if (e.code === "ShiftLeft") controls.slowDown = true;
+    if (e.code === "Space") controls.shoot = true;
+    
 });
 
 window.addEventListener("keyup", (e) => {
@@ -20,6 +23,7 @@ window.addEventListener("keyup", (e) => {
     if (e.code === "ArrowDown") controls.downPressed = false;
     if (e.code === "ArrowUp") controls.upPressed = false;
     if (e.code === "ShiftLeft") controls.slowDown = false;
+    if (e.code === "Space") controls.shoot = false;
 });
 
 export default controls

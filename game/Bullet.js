@@ -1,12 +1,12 @@
-const Player = {
-    canvasWidth: 20,
-    canvasHeight: 20,
-    pathWidth: 20,
-    pathHeight: 20,
+const Bullet = {
+    canvasWidth: 15,
+    canvasHeight: 15,
+    pathWidth: 15,
+    pathHeight: 15,
     speed: 3,
     posX: 0,
     posY: 0,
-    color: "rgb(117, 177, 212)",
+    color: "#ffffff",
     path: null,
     createPath(width, height) {
         const path = new Path2D();
@@ -15,4 +15,4 @@ const Player = {
     },
 };
 
-export default Player;
+export default Bullet;
