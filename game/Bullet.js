@@ -3,18 +3,18 @@ class Bullet {
         this.posX = posX;
         this.posY = posY;
     }
-    canvasWidth = 15;
-    canvasHeight = 15;
-    pathWidth = 15;
-    pathHeight = 15;
+    static canvasWidth = 5;
+    static canvasHeight = 5;
+    static pathWidth = 5;
+    static pathHeight = 5;
+    static color = "#ffffff";
+    posX;
+    posY;
     speed = 3;
-    posX = 0;
-    posY = 0;
-    color = "#ffffff";
     path = null;
 
     move() {
-        this.y += this.speed;
+        this.posY += this.speed;
     }
 }
 
