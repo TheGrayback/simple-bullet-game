@@ -1,8 +1,10 @@
 const Player = {
-    width: 20,
-    height: 20,
+    canvasWidth: 20,
+    canvasHeight: 20,
+    pathWidth: 20,
+    pathHeight: 20,
     speed: 3,
-    color: "rgb(130, 176, 203)",
+    color: "rgb(117, 177, 212)",
     path: null,
     createPath(width, height) {
         const path = new Path2D();

@@ -4,11 +4,12 @@ import controls from "./input.js";
 const gameCanvas = document.getElementById("game");
 const gameCtx = gameCanvas.getContext("2d");
 const playerCanvas = document.createElement("canvas");
+playerCanvas.width = Player.canvasWidth;
+playerCanvas.height = Player.canvasHeight;
 const playerContext = playerCanvas.getContext("2d");
 const Xcoord = document.getElementById("playerX");
 const Ycoord = document.getElementById("playerY");
-playerCanvas.width = 20;
-playerCanvas.height = 20;
+
 let movePlayerX = 0;
 let movePlayerY = 0;
 
@@ -16,7 +17,7 @@ const toRad = Math.PI / 180;
 
 function drawPlayerOnCanvas(Player, playerCanvas, playerContext, gameCtx, moveX, moveY) {
     playerContext.fillStyle = Player.color;
-    Player.path = Player.createPath(Player.width, Player.height);
+    Player.path = Player.createPath(Player.pathWidth, Player.pathHeight);
     playerContext.fill(Player.path);
     gameCtx.drawImage(playerCanvas, moveX, moveY);
 }
@@ -26,13 +27,13 @@ function gameLoop() {
     if (controls.slowDown) {
         speed *= 0.5;
     }
-    if (controls.rightPressed && movePlayerX + Player.width < gameCanvas.width) {
+    if (controls.rightPressed && movePlayerX + Player.pathWidth < gameCanvas.width) {
         movePlayerX += speed;
     }
     if (controls.leftPressed && movePlayerX > 0) {
         movePlayerX -= speed;
     }
-    if (controls.downPressed && movePlayerY + Player.height < gameCanvas.height) {
+    if (controls.downPressed && movePlayerY + Player.pathHeight < gameCanvas.height) {
         movePlayerY += speed;
     }
     if (controls.upPressed && movePlayerY > 0) {
