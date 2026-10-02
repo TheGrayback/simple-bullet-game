@@ -58,7 +58,7 @@ function gameLoop() {
         player.posY -= speed;
     }
     if (controls.shoot) {
-        let bullet = new Bullet(player.posX + Math.floor(player.canvasWidth/2 - Bullet.canvasWidth / 2), player.posY);
+        let bullet = new Bullet(player.posX + (player.canvasWidth - Bullet.canvasWidth) / 2, player.posY + player.canvasHeight);
         bullet.path = bulletPath;
         playerBullets.push(bullet);
     }
@@ -69,18 +69,18 @@ function gameLoop() {
         .filter((x) => x[1])
         .map((x) => x[0]);
     bulletCount.textContent = Number(playerBullets.length)
-
+    
+    drawPlayerOnCanvas(player, playerCanvas, gameCtx);
     for (let i = playerBullets.length - 1; i >= 0; i--) {
         const bullet = playerBullets[i];
+        drawPlayerBullet(bullet, playerBulletCanvas, gameCtx);
         bullet.posY += bullet.speed;
         if (bullet.posY > gameCanvas.height) {
             playerBullets.splice(i, 1);
             continue;
         }
-        drawPlayerBullet(bullet, playerBulletCanvas, gameCtx);
     }
 
-    drawPlayerOnCanvas(player, playerCanvas, gameCtx);
     requestAnimationFrame(gameLoop);
 }
 

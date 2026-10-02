@@ -10,7 +10,7 @@ class Bullet {
     static color = "#ffffff";
     posX;
     posY;
-    speed = 3;
+    speed = 15;
     path = null;
 
     move() {
