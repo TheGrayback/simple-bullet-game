@@ -1,16 +1,16 @@
-class Bullet {
+export class Bullet {
     constructor(posX, posY) {
         this.posX = posX;
         this.posY = posY;
     }
-    static canvasWidth = 5;
-    static canvasHeight = 5;
-    static pathWidth = 5;
-    static pathHeight = 5;
-    static color = "#ffffff";
+    canvasWidth = 5;
+    canvasHeight = 5;
+    pathWidth = 5;
+    pathHeight = 5;
+    color = "#ffffff";
     posX;
     posY;
-    speed = 15;
+    speed = 5;
     path = null;
 
     move() {
@@ -18,4 +18,10 @@ class Bullet {
     }
 }
 
-export default Bullet;
+export const playerBullet = {
+    canvasWidth: 5,
+    canvasHeight: 5,
+    pathWidth: 5,
+    pathHeight: 5,
+    color: "#ffffff",
+};
