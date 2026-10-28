@@ -2,7 +2,10 @@ import { Bullet, playerBullet } from "./Bullet.js";
 import Player from "./Player.js";
 import PracticeTarget from "./Target.js";
 import controls from "./input.js";
-import { createPath } from "./utils.js";
+import { createPath, regHit, regCollide } from "./utils.js";
+import { Xcoord, Ycoord, buttonPressed, bulletCount } from "./debug.js";
+import { drawPlayerBullets, drawPlayerOnCanvas, drawPracticeTarget } from "./render.js";
+import { movePlayerBullets } from "./update.js";
 
 const gameCanvas = document.getElementById("game");
 const gameCtx = gameCanvas.getContext("2d");
@@ -38,55 +41,19 @@ practiceTargetCtx.fill(targetPath);
 practiceTraget.posX = 100;
 practiceTraget.posY = 50;
 
-const Xcoord = document.getElementById("playerX");
-const Ycoord = document.getElementById("playerY");
-const buttonPressed = document.getElementById("button");
-const bulletCount = document.getElementById("bulletCount");
-const shootingDeltaView = document.getElementById("delta");
-const perfnow = document.getElementById("perfnow");
-
-const toRad = Math.PI / 180;
 const shootingCooldown = 100;
 let lastShotTime = 0;
 
 let playerBullets = [];
 
-function drawPlayerOnCanvas(player, playerCanvas, gameCtx) {
-    gameCtx.drawImage(playerCanvas, player.posX, player.posY);
-}
 
-function drawPlayerBullet(bullet, bulletCanvas, gameCtx) {
-    gameCtx.drawImage(bulletCanvas, bullet.posX, bullet.posY);
-}
-
-function drawPracticeTarget(target, targetCanvas, gameCtx) {
-    gameCtx.drawImage(targetCanvas, target.posX, target.posY);
-}
-
-function regHit(target, bullet) {
-    if (
-        Math.max(bullet.posX, target.posX) <=
-            Math.min(bullet.posX + bullet.canvasWidth, target.posX + target.canvasWidth) &&
-        Math.max(bullet.posY, target.posY) <=
-            Math.min(bullet.posY + bullet.canvasHeight, target.posY + target.canvasHeight)
-    )
-        return true;
-}
-
-function regCollide(player, target, nextX, nextY) {
-    const collisionX =
-        Math.max(nextX, target.posX) <= Math.min(nextX + player.canvasWidth, target.posX + target.canvasWidth);
-
-    const collisionY =
-        Math.max(nextY, target.posY) <= Math.min(nextY + player.canvasHeight, target.posY + target.canvasHeight);
-
-    return collisionX && collisionY;
-}
 
 function gameLoop() {
     let now = performance.now();
     let shootingCooldownDelta = now - lastShotTime;
+
     gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
     let speed = player.speed;
 
     if (controls.slowDown) {
@@ -135,23 +102,12 @@ function gameLoop() {
         .filter((x) => x[1])
         .map((x) => x[0]);
     bulletCount.textContent = Number(playerBullets.length);
-    // shootingDeltaView.textContent = Number(shootingCooldownDelta);
-    // perfnow.textContent = Number(performance.now());
+
+    movePlayerBullets(playerBullets, practiceTraget);
 
     drawPlayerOnCanvas(player, playerCanvas, gameCtx);
     drawPracticeTarget(practiceTraget, practiceTargetCanvas, gameCtx);
-
-    for (let i = playerBullets.length - 1; i >= 0; i--) {
-        const bullet = playerBullets[i];
-        drawPlayerBullet(bullet, playerBulletCanvas, gameCtx);
-        bullet.posY -= bullet.speed;
-        if (regHit(practiceTraget, bullet)) playerBullets.splice(i, 1);
-        if (bullet.posY < 0) {
-            playerBullets.splice(i, 1);
-            continue;
-        }
-    }
-    // console.log(shootingCooldownStart);
+    drawPlayerBullets(playerBullets, playerBulletCanvas, gameCtx);
 
     requestAnimationFrame(gameLoop);
 }
